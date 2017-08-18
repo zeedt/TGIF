@@ -1,6 +1,8 @@
 import  React,{Component} from 'react';
 import {View,DrawerLayoutAndroid,AsyncStorage,Text,List,ScrollView,Image,FlatList,ListView,Alert,Dimensions} from 'react-native';
 import {TabNavigator} from 'react-navigation';
+import {likeImage} from './../Utils/utils';
+import {Icon} from 'react-native-elements'
 import {Column as Col, Row} from 'react-native-flexbox-grid'
 import ResponsiveImage from 'react-native-responsive-image';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
@@ -54,13 +56,10 @@ export default class General extends Component{
                      <Card>
                     <CardTitle title={rowData.Category}/>
                     <CardImage source={{uri: rowData.Blob}} style={{padding:10,backgroundColor:"white"}} title="@TGIFNAIJA"/>
+                    <Text>{rowData.NUM} likes </Text>
                     <CardContent text={rowData.Description}/>
                     <CardAction seperator={true} inColumn={false} style={{flex:1}}>
-                        <CardButton style={{flex:1}}
-                        onPress={() => {}}
-                        title="Like"
-                        color='blue'
-                        />
+                        <Icon raised name="heartbeat" type="font-awesome" color="blue" onPress={()=>{likeImage(this.props.user.Reducers.user,rowData.ID)}} />
                         <CardButton style={{flex:1}}
                         onPress={() => {}}
                         title="Website"

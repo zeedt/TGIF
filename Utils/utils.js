@@ -9,8 +9,13 @@ export function loginUser(username,password){
                 password: password
             })
         }).then((response)=>response.json()).then((responseJson)=>{
-            // alert(JSON.stringify(responseJson));
             return JSON.stringify(responseJson);
         })
         .catch((err)=>{return ({data:"Error in communication"})});
+    }
+
+    export async function likeImage(username,id){
+        fetch("http://192.168.43.224:8007/like?id="+id+"&user="+username)
+        .then((response)=>response.toString()).then((resp)=>{})
+        .catch((err)=>{alert("Netwrok communication error")});        
     }
