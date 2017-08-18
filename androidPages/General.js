@@ -59,7 +59,9 @@ export default class General extends Component{
                     <Text>{rowData.NUM} likes </Text>
                     <CardContent text={rowData.Description}/>
                     <CardAction seperator={true} inColumn={false} style={{flex:1}}>
-                        <Icon raised name="heartbeat" type="font-awesome" color="blue" onPress={()=>{likeImage(this.props.user.Reducers.user,rowData.ID)}} />
+                        <Icon raised name="thumbs-o-up" type="font-awesome" color="blue" onPress={()=>{likeImage(this.props.user.Reducers.user,rowData.ID)}} />
+                        <Icon raised name="thumbs-o-up" type="font-awesome" color="blue" onPress={()=>{likeImage(this.props.user.Reducers.user,rowData.ID)}} />
+                       
                         <CardButton style={{flex:1}}
                         onPress={() => {}}
                         title="Website"
