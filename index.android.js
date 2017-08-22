@@ -23,18 +23,20 @@ async function getUser(){
   try {
     //  await AsyncStorage.removeItem('SavedRecords');
     //  await AsyncStorage.removeItem('lastfetchedID');
-  const alreadyStored = await AsyncStorage.getItem("SavedRecords");
-  if (alreadyStored!=null){
-    store.dispatch(fetchStoredImage(alreadyStored));
-  }
-  const lastfetchedId = await AsyncStorage.getItem('lastfetchedID');  
+  // const alreadyStored = await AsyncStorage.getItem("SavedRecords");
+  
+  // if (alreadyStored!=null){
+  //   store.dispatch(fetchStoredImage(alreadyStored));
+  // }
+  // const lastfetchedId = await AsyncStorage.getItem('lastfetchedID');  
   const value = await AsyncStorage.getItem('Username');
+  
   if (value !== null){
-    if(lastfetchedId!=null && lastfetchedId!=undefined){
-      store.dispatch(fetchUser(value,lastfetchedId));
-    }else{
+    // if(lastfetchedId!=null && lastfetchedId!=undefined){
+    //   store.dispatch(fetchUser(value,0));
+    // }else{
       store.dispatch(fetchUser(value,0));      
-    }
+    // }
      }else{
   store.dispatch(fetchUser(""));       
      }

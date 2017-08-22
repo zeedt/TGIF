@@ -55,7 +55,7 @@ export default function Reducers(state=initialState,action){
     if(action.type=="FETCH_IMAGES"){
         if (fetching==false){
         fetching = true;
-        fetch("http://192.168.43.224:8007/fetchPostImage?id="+state.lastFetchedId).then((response)=>response.json()).
+        fetch("http://192.168.43.224:8007/fetchPostImage?id="+state.lastFetchedId+"&username="+state.user).then((response)=>response.json()).
         // fetch("http://localhost:8007/fetchPostImage").then((response)=>response.json()).
         then((responseJson)=>{
         var lastId = "";
@@ -63,7 +63,7 @@ export default function Reducers(state=initialState,action){
         for(var g=0;g<responseJson.length;g++){
             responseJson[g]["key"] = responseJson[g].ID;
             Newdata.data.push(responseJson[g]);
-            Newdata.lastFetchedId=responseJson[g].ID;
+            state.lastFetchedId=responseJson[g].ID;
             lastId =  responseJson[g].ID;                   
         }
         state.data = Newdata.data;
