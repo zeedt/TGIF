@@ -19,3 +19,9 @@ export function loginUser(username,password){
         .then((response)=>response.toString()).then((resp)=>{})
         .catch((err)=>{alert("Netwrok communication error")});        
     }
+    
+    export async function dislikeImage(username,imageId){
+        fetch("http://192.168.43.224:8007/dislike?imageId="+imageId+"&user="+username)
+        .then((response)=>response.toString()).then((resp)=>{})
+        .catch((err)=>{alert("Netwrok communication error")});        
+    }

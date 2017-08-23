@@ -2,6 +2,7 @@ import  React,{Component} from 'react';
 import {View,DrawerLayoutAndroid,AsyncStorage,Text,List,ScrollView,Image,FlatList,ListView,Alert,Dimensions} from 'react-native';
 import {TabNavigator} from 'react-navigation';
 import {likeImage} from './../Utils/utils';
+import {dislikeImage} from './../Utils/utils';
 import {Icon} from 'react-native-elements'
 import {Column as Col, Row} from 'react-native-flexbox-grid'
 import ResponsiveImage from 'react-native-responsive-image';
@@ -40,6 +41,7 @@ export default class General extends Component{
       for (var i=0;i<newData.length;i++){
         if (newData[i].ID==rowID){
             if(newData[i].LIKED=="1"){
+                dislikeImage(this.props.user.Reducers.user,rowID)
                 newData[i].LIKED="0";newData[i].NUM=newData[i].NUM-1
             }
             else if(newData[i].LIKED=="0"){

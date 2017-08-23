@@ -1,5 +1,5 @@
 import  React,{Component} from 'react';
-import {View,DrawerLayoutAndroid,Text,List} from 'react-native';
+import {View,DrawerLayoutAndroid,Text,List,WebView} from 'react-native';
 import {StackNavigator,TabNavigator} from 'react-navigation';
 
 export default class Lounges extends Component{
@@ -14,7 +14,7 @@ export default class Lounges extends Component{
   };
     render(){
         return(
-            <Text>This is Lounges page </Text>
+            <WebView source={{uri:"http://tgifnaija.com/lounges"}} />
         )
     }
 }

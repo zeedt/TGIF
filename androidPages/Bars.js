@@ -1,5 +1,5 @@
 import  React,{Component} from 'react';
-import {View,DrawerLayoutAndroid,Text,List} from 'react-native';
+import {View,DrawerLayoutAndroid,Text,List,WebView} from 'react-native';
 import {StackNavigator,TabNavigator} from 'react-navigation';
 
 export default class Bars extends Component{
@@ -14,7 +14,7 @@ export default class Bars extends Component{
   };
     render(){
         return(
-            <Text>This is Bar poage </Text>
+            <WebView source={{uri:"http://tgifnaija.com/bars"}} />
         )
     }
 }
