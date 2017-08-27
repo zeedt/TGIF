@@ -6,9 +6,11 @@ var initialState = {
     fetching:false,
     fetchingStored:false,
     lastFetchedId:0,
-    loadTime:0   
+    loadTime:0,
+    clubErrorLoading:false   
 }
 var i=0;
+var lastId = 0;
 var fetching = false;
 export default function Reducers(state=initialState,action){    
     if (action.type=="SET_FETCHING"){
@@ -44,6 +46,12 @@ export default function Reducers(state=initialState,action){
         state.loadTime = Newdata.loadTime
         return {...state}
     }
+    if(action.type=="SET_CLUB_ERROR"){
+        var Newdata = state
+        Newdata.clubErrorLoading = !Newdata.clubErrorLoading;
+        state.clubErrorLoading = Newdata.clubErrorLoading
+        return {...state}
+    }
     if(action.type=="FETCH_STORED"){
         state.fetchingStored = true;        
         var Newdata = state;
@@ -54,29 +62,32 @@ export default function Reducers(state=initialState,action){
     }
     if(action.type=="FETCH_IMAGES"){
         if (fetching==false){
+            // alert("false "+state.lastFetchedId);
         fetching = true;
-        fetch("http://192.168.43.224:8007/fetchPostImage?id="+state.lastFetchedId+"&username="+state.user).then((response)=>response.json()).
+        fetch("http://vast-bastion-66037.herokuapp.com/fetchPostImage?id="+lastId+"&username="+state.user).then((response)=>response.json()).
+        // fetch("http://192.168.43.224:8007/fetchPostImage?id="+lastId+"&username="+state.user).then((response)=>response.json()).
         // fetch("http://localhost:8007/fetchPostImage").then((response)=>response.json()).
         then((responseJson)=>{
-        var lastId = "";
         var Newdata = state;
         for(var g=0;g<responseJson.length;g++){
             responseJson[g]["key"] = responseJson[g].ID;
             Newdata.data.push(responseJson[g]);
-            state.lastFetchedId=responseJson[g].ID;
+            Newdata.lastFetchedId=responseJson[g].ID;
             lastId =  responseJson[g].ID;                   
         }
         state.data = Newdata.data;
         state.lastFetchedId = Newdata.lastFetchedId;
-        if(responseJson.length>0 && responseJson!=null && responseJson!=undefined){
-            saveToDB(responseJson,lastId);
-        }else{
+            // alert("false "+state.lastFetchedId);
+        
+        // if(responseJson.length>0 && responseJson!=null && responseJson!=undefined){
+            // saveToDB(responseJson,lastId);
+        // }else{
         fetching = false;
-        }
-        return {...state}
+        // }
+        return state
 })
         .catch((err)=>{
-        alert("Error is "+err)
+        console.log("Error is "+err)
         fetching = false;
         return state;
 });
@@ -102,7 +113,7 @@ async function saveToDB (records,lastfetchedID){
         }
     }catch(err2){
             if(i==0){        
-        alert("Error while saving "+err2);
+        console.log("Error while saving "+err2);
             i++;    
         }
     }
@@ -117,7 +128,7 @@ async function fetchStoredImage(){
             return JSON.parse(StoredImage);
         }
     }catch(err2){
-        alert("Error while saving "+err2);
+        console.log("Error while saving "+err2);
         return [];
     }
 }

@@ -16,3 +16,6 @@ export function fetchStoredImage(storedImage){
 export function setFetching(value){
     return {type:"SET_FETCHING",data:value}
 }
+export function setClubError(){
+    return {type:"SET_CLUB_ERROR"}
+}

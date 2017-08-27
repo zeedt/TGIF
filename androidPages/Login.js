@@ -38,7 +38,8 @@ export default class Login extends Component{
     return true;
 }
 validateUser(){
-    fetch("http://192.168.43.224:8007/validateUser",{
+    fetch("http://vast-bastion-66037.herokuapp.com/validateUser",{
+    // fetch("http://192.168.43.224:8007/validateUser",{
     // fetch("http://localhost:8007/validateUser",{
             method:'POST',
              headers: {

@@ -11,6 +11,7 @@ import { fetchUser } from './../Actions/actions'
 import {fetchImage } from './../Actions/actions'
 import {fetchStoredImage } from './../Actions/actions'
 import {setFetching } from './../Actions/actions'
+import {setClubError } from './../Actions/actions'
 
 const dispatchToProps = (dispatch) => {
   return {
@@ -18,7 +19,8 @@ const dispatchToProps = (dispatch) => {
     fetchUser: (params) => dispatch(fetchUser(params)),
     fetchImage: () => dispatch(fetchImage()),
     fetchStoredImage:(params)=>dispatch(fetchStoredImage(params)),
-    setFetching:(params)=> dispatch(setFetching(params))
+    setFetching:(params)=> dispatch(setFetching(params)),
+    setClubError:()=>dispatch(setClubError())
   }
 }
 const mapStateToProps = (state) => ({

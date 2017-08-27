@@ -21,7 +21,7 @@ import {fetchStoredImage} from './Actions/actions'
 const store = configureStore();
 async function getUser(){
   try {
-    //  await AsyncStorage.removeItem('SavedRecords');
+    //  await AsyncStorage.removeItem('Username');
     //  await AsyncStorage.removeItem('lastfetchedID');
   // const alreadyStored = await AsyncStorage.getItem("SavedRecords");
   
@@ -38,10 +38,10 @@ async function getUser(){
       store.dispatch(fetchUser(value,0));      
     // }
      }else{
-  store.dispatch(fetchUser(""));       
+  store.dispatch(fetchUser("",0));       
      }
     } catch (error) {
-        alert("Error occured "+error)
+        console.log("Error occured "+error)
     }
     }
     getUser();
