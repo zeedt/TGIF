@@ -19,3 +19,10 @@ export function setFetching(value){
 export function setClubError(){
     return {type:"SET_CLUB_ERROR"}
 }
+export function performUpdate(id,nLikes){
+    return {type:"PERFORM_UPDATE",id:id,nLikes:nLikes}
+}
+export function likeImage(id){
+    // alert("IN "+id);
+    return {type:"LIKE_IMAGE",id:id}
+}

@@ -7,7 +7,10 @@ var initialState = {
     fetchingStored:false,
     lastFetchedId:0,
     loadTime:0,
-    clubErrorLoading:false   
+    clubErrorLoading:false,
+    lastUpdatedNo:0,
+    updatingStatus: false,
+
 }
 var i=0;
 var lastId = 0;
@@ -68,15 +71,30 @@ export default function Reducers(state=initialState,action){
         // fetch("http://192.168.43.224:8007/fetchPostImage?id="+lastId+"&username="+state.user).then((response)=>response.json()).
         // fetch("http://localhost:8007/fetchPostImage").then((response)=>response.json()).
         then((responseJson)=>{
-        var Newdata = state;
+          
         for(var g=0;g<responseJson.length;g++){
-            responseJson[g]["key"] = responseJson[g].ID;
-            Newdata.data.push(responseJson[g]);
-            Newdata.lastFetchedId=responseJson[g].ID;
-            lastId =  responseJson[g].ID;                   
-        }
-        state.data = Newdata.data;
-        state.lastFetchedId = Newdata.lastFetchedId;
+            state.data.push(responseJson[g]);
+            // responseJson[g]["key"] = responseJson[g].ID;
+            // alert("Key is "+responseJson[g].key)
+            // newArr.push(responseJson[g]);
+            // Newdata.data.push(responseJson[g]);
+            // Newdata.lastFetchedId=responseJson[g].ID;
+            // lastId =  responseJson[g].ID;                   
+        }  if(responseJson.length>0){
+            lastId =  responseJson[responseJson.length-1].ID; 
+            // var newD = state.data.concat(responseJson);
+            // console.log("New D "+newD.length)
+            // state.data = state.data.concat(responseJson);                             
+            }
+        console.log("New Array is "+responseJson.length)
+        // state.data = state.data.concat(responseJson)
+        // var Newdata = state;
+        // var newArr = []
+        
+        console.log("Data size is "+state.data.length)
+        // state.data.concat(newArr)
+        // state.data = Newdata.data;
+        // state.lastFetchedId = Newdata.lastFetchedId;
             // alert("false "+state.lastFetchedId);
         
         // if(responseJson.length>0 && responseJson!=null && responseJson!=undefined){
@@ -92,7 +110,41 @@ export default function Reducers(state=initialState,action){
         return state;
 });
     }
-    }
+}
+if(action.type=="PERFORM_UPDATE"){
+    console.log("Number updated is "+state.lastUpdatedNo);
+    var h = 0;    
+}
+if (action.type=="LIKE_IMAGE"){
+    console.log("ID liked now is "+action.id);
+        var Newdata = state;
+    console.log("Size is  "+Newdata.data.length);
+        
+        for (var i=0;i<Newdata.data.length;i++){
+            console.log(Newdata.data[i].ID)
+            if (Newdata.data[i].ID==action.id){
+                console.log("Equak now");
+                if(Newdata.data[i].LIKED=="0"){
+                     console.log("Liking")
+                    Newdata.data[i].LIKED="1";Newdata.data[i].NUM=Newdata.data[i].NUM+1;
+                      fetch("http://vast-bastion-66037.herokuapp.com/like?id="+action.id+"&user="+state.user)
+                // fetch("http://192.168.43.224:8007/like?id="+action.id+"&user="+state.user)
+                .then((response)=>response.toString()).then((resp)=>{})
+                .catch((err)=>{console.log("Netwrok communication error")});
+                }else if(Newdata.data[i].LIKED=="1"){
+                     console.log("DisLiking")                    
+                    Newdata.data[i].LIKED="0";Newdata.data[i].NUM=Newdata.data[i].NUM-1;
+                                fetch("http://vast-bastion-66037.herokuapp.com/dislike?imageId="+action.id+"&user="+state.user)
+                    // fetch("http://192.168.43.224:8007/dislike?imageId="+action.id+"&user="+state.user)
+                    .then((response)=>response.toString()).then((resp)=>{})
+                    .catch((err)=>{console.log("Netwrok communication error")}); 
+                }
+                break;
+            }
+        }  
+        state.data = Newdata.data;
+        return state;
+}
     return state;
 }
 

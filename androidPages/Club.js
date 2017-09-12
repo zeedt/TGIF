@@ -6,7 +6,7 @@ export default class Clubs extends Component{
     constructor(props){
         super(props);
         this.var = false;
-        // this.state = {error:false};
+        this.state = {presenturl:"http://tgifnaija.com/clubs"};
 
     }
     
@@ -17,7 +17,10 @@ export default class Clubs extends Component{
   setError
   (){this.props.setClubError();}
      //   this.setState({error:!this.state.error});
-    
+    setCurrentUrl(webViewState){
+        // alert("URL is "+webViewState.url)
+        this.setState({uri:webViewState.url})
+    }
    
     componentWillMount(){
         
@@ -25,7 +28,10 @@ export default class Clubs extends Component{
     render(){
         if(this.var==false){   
         return(
-            <WebView source={{uri:"http://tgifnaija.com/clubs"}} renderError={()=>{this.var=true}} />
+            <WebView source={{uri:this.state.presenturl}} renderError={()=>{this.var=true}} 
+            renderLoading={()=>{console.log("NN"); return <Text>Loading page now</Text>}}
+            onNavigationStateChange = {this.setCurrentUrl.bind(this)}
+            />
         )
     }
     else{

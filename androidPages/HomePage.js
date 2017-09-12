@@ -12,6 +12,7 @@ import {fetchImage } from './../Actions/actions'
 import {fetchStoredImage } from './../Actions/actions'
 import {setFetching } from './../Actions/actions'
 import {setClubError } from './../Actions/actions'
+import {likeImage } from './../Actions/actions'
 
 const dispatchToProps = (dispatch) => {
   return {
@@ -20,7 +21,9 @@ const dispatchToProps = (dispatch) => {
     fetchImage: () => dispatch(fetchImage()),
     fetchStoredImage:(params)=>dispatch(fetchStoredImage(params)),
     setFetching:(params)=> dispatch(setFetching(params)),
-    setClubError:()=>dispatch(setClubError())
+    setClubError:()=>dispatch(setClubError()),
+    likeImage:(id)=>dispatch(likeImage(id))
+    
   }
 }
 const mapStateToProps = (state) => ({
