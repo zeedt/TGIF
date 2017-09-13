@@ -1,5 +1,5 @@
 import  React,{Component,PureComponent} from 'react';
-import {View,DrawerLayoutAndroid,AsyncStorage,Text,ScrollView,Image,FlatList,ListView,Alert,Dimensions,TouchableHighlight,ActivityIndicator,TouchableNativeFeedback,VirtualizedList} from 'react-native';
+import {BackAndroid,View,Modal,DrawerLayoutAndroid,AsyncStorage,Text,ScrollView,Image,FlatList,ListView,Alert,Dimensions,TouchableHighlight,ActivityIndicator,TouchableNativeFeedback,VirtualizedList} from 'react-native';
 import {TabNavigator} from 'react-navigation';
 // import {likeImage} from './../Utils/utils';
 import {likeImage } from './../Actions/actions'
@@ -8,24 +8,34 @@ import {Icon,List,ListItem} from 'react-native-elements'
 import {Column as Col, Row} from 'react-native-flexbox-grid'
 import ResponsiveImage from 'react-native-responsive-image';
 import ListCard from './listCard'
+import AutoHeightImage from 'react-native-auto-height-image'
+
+import ImageZoom from 'react-native-image-pan-zoom'
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
 export default class General extends PureComponent {
     constructor(props){
         super(props);
         this.ready = false;
+        this.check = false;
         this.updatingIDs = [];
         this.updatingIdStatus = [];
         this.dispatchUpdateId = [];
-        this.props.fetchImage();
+    this.state= {imageArray:[],showModal:false};
+    this.imgArrs = [{uri:"hhhhh"}];
+        setInterval(()=>{
+        if(this.check==false){
+            this.props.fetchImage();
+        }
+        },5000)
         this.f = 0;                     
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         // this.onEee = 
         this.state = {
-            ds:ds.cloneWithRows([]),mydata:[],refreshing:false,loading:false,loadingMore:false,
+            ds:ds.cloneWithRows([]),mydata:[],refreshing:false,loading:false,loadingMore:false,imageView:"",rimg:"",gg:0,
             data:ds,presentId:"",imgStat:""}        
         setInterval(()=>{          
         if(this.ready == true){
-            this.props.fetchImage();                            
+            // this.props.fetchImage();                            
             // alert(this.state.refreshing)
             // this.setState({mydata:(this.props.user.Reducers.data)});
         }  
@@ -39,6 +49,16 @@ export default class General extends PureComponent {
         }
       }
     }
+    componentDidMount(){
+        var navigator;
+        alert("Mountrd");
+        BackAndroid.addEventListener('hardwareBackPress',()=>{
+            alert("Pressed");
+            if (this.state.showModal==true){
+                this.setState({showModal:false})
+            }
+        })
+    }
     async executeUpdate(id,no){
         setInterval(()=>{          
          console.log("executing "+id); 
@@ -48,8 +68,8 @@ export default class General extends PureComponent {
         }
          var index = this.updatingIDs.indexOf(id);                      
          if (this.updatingIdStatus[index]==false){
-         fetch("http://vast-bastion-66037.herokuapp.com/updateItem?id="+id).then((response)=>response.json())
-        //  fetch("http://192.168.43.224:8007/updateItem?id="+id).then((response)=>response.json())
+        //  fetch("http://vast-bastion-66037.herokuapp.com/updateItem?id="+id).then((response)=>response.json())
+         fetch("http://192.168.43.224:8007/updateItem?id="+id).then((response)=>response.json())
          .then((resp)=>{this.updatingIdStatus[index]=false;
                 var t = "nothing";             
              for (var i=0;i<this.state.mydata.length;i++){
@@ -151,6 +171,26 @@ export default class General extends PureComponent {
         // },200)
         // this.setState({refreshing:false});
     }
+    getModal(renderImage){
+    // if(this.state.showModal==true){
+        this.setState({showModal:true,rimg:renderImage});
+        /*return (
+        <Modal visible={this.state.showModal} transparent={false} onRequestClose={()=>{this.setState({showModal:false})}} >
+            <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
+            <Text>Hello</Text>
+            <ImageZoom cropWidth={Dimensions.get('window').width}
+                cropHeight={Dimensions.get('window').height-15}
+                imageHeight={(Dimensions.get('window').height-15)*0.5}
+                imageWidth = {Dimensions.get('window').width}
+                >
+                <AutoHeightImage width={Dimensions.get('window').width} imageURL={renderImage} />
+                </ImageZoom>
+            </View>
+        </Modal>
+    )*/
+// }
+}
+
      _keyExtractor = (item, index) => item.ID;
     render(){
         if (this.props.user.Reducers.data.length<=0){
@@ -164,20 +204,40 @@ export default class General extends PureComponent {
         )
         }else{
             this.ready = true;
+            this.check = true;
+            if(this.state.gg==0){
+                this.setState({gg:this.state.gg+1,showModal:false});
+            }
         return(
-            <ScrollView>
+            // <ScrollView>
+                <View style={{backgroundColor:"white"}}>
+            <Modal visible={this.state.showModal} transparent={false} onRequestClose={()=>{this.setState({showModal:false})}} >
+            <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
+            <Text>Hello</Text>
+            <ImageZoom cropWidth={Dimensions.get('window').width}
+                cropHeight={Dimensions.get('window').height-15}
+                imageHeight={(Dimensions.get('window').height-15)*0.5}
+                imageWidth = {Dimensions.get('window').width}
+                >
+                <AutoHeightImage width={Dimensions.get('window').width} imageURL={this.state.rimg} />
+                </ImageZoom>
+            </View>
+        </Modal>
           <FlatList data={this.props.user.Reducers.data} 
                 renderItem = {({item})=>
-                <ListCard item={item} />
+                <TouchableHighlight onPress={()=>{console.log("NN");this.getModal(item.Blob)}} ><View><ListCard item={item} /></View></TouchableHighlight>
                 }
                 keyExtractor={(item, index) => index}
                 extraData={this.props.user.Reducers.data}  
                 refreshing={this.state.refreshing}
                 onRefresh={this.handleRefresh}
                 removeClippedSubviews={false}
+                onEndReached={()=>{console.log("Bottom reached");this.props.fetchImage()}}
+                onEndReachedThreshold ={1}
                 ListFooterComponent={()=>{if(this.state.loadingMore==true){return(<ActivityIndicator color="blue" style={{marginBottom:5,paddingBottom:5}} />)}else{return <View style={{marginBottom:5,paddingBottom:5}}><Text></Text></View>}}}
                  />
-                 </ScrollView>
+                 </View>
+                //   </ScrollView>
         )
         }
     }

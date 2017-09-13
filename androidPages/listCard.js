@@ -1,15 +1,15 @@
 import React,{PureComponent} from 'react';
-import {View,DrawerLayoutAndroid,AsyncStorage,Text,ScrollView,Image,FlatList,ListView,Alert,Dimensions,TouchableHighlight,ActivityIndicator,TouchableNativeFeedback,VirtualizedList} from 'react-native';
+import {ImageEditor,Modal,ImageStore,View,DrawerLayoutAndroid,AsyncStorage,Text,ScrollView,Image,FlatList,ListView,Alert,Dimensions,TouchableHighlight,ActivityIndicator,TouchableNativeFeedback,VirtualizedList} from 'react-native';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
 import {Column as Col, Row} from 'react-native-flexbox-grid'
 import {Icon,List,ListItem} from 'react-native-elements'
 import configureStore from '.././configureStore'
+import AutoHeightImage from 'react-native-auto-height-image'
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import rootReducer from './../Reducers';
 import {likeImage } from './../Actions/actions'
 import { connect } from 'react-redux'
-
 const dispatchToProps = (dispatch) => {
   return {
     adduser: (params) => dispatch(addUser()),
@@ -30,7 +30,7 @@ constructor(props){
     super(props);
     this.dispatchUpdateId = [];   
     this.updatingIDs = [];        
-    this.updatingIdStatus = [];        
+    this.updatingIdStatus = []; 
 }
 async executeUpdate(id,no){
         setInterval(()=>{          
@@ -88,13 +88,23 @@ getStyle(liked,id,num){
       }
       return <Text>Olamide</Text>
   }
-render(){
+  getCroppedImage(myuri){
+    ImageEditor.cropImage('https://facebook.github.io/react/img/logo_og.png',{offset:{x:0,y:0},size:{width:100,height:100}},(ruri)=>{return ruri},(err)=>{console.log("Error occured for "+err);})
+  }
 
+render(){
+    
     return (
-    <Card style={{paddingLeft:10,paddingRight:10}}>
+        <View>
+            
+    <Card >
                     <CardTitle title={this.props.item.Category} />
-                    <CardImage source={{uri: this.props.item.Blob}} style={{backgroundColor:"white",paddingTop:5}} title="@TGIFNAIJA"/>
-                    <CardContent text={this.props.item.Description}/>
+                    {/*<CardImage source={{uri: this.props.item.Blob}} style={{backgroundColor:"white",paddingTop:5}} title="@TGIFNAIJA"/>*/}
+                    
+                    <AutoHeightImage imageURL ={this.props.item.Blob} width={Dimensions.get('window').width-10} 
+                     style={{alignItem:"center",alignContent:"center",marginBottom:10}} 
+                     />
+                    <CardContent text={this.props.item.Description} />
                     <Row style={{paddingLeft:10,marginBottom:5}}><Icon name="thumbs-o-up" size={15} type="font-awesome" color="red" />                                             
                     <Text>  {this.ret(this.props.item.LIKED,this.props.item.NUM)}</Text>
                     </Row>
@@ -118,6 +128,7 @@ render(){
                         />
                     </CardAction>
                     </Card>
+                    </View>
         
     )
 }
