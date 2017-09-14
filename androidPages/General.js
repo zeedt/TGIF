@@ -1,16 +1,12 @@
 import  React,{Component,PureComponent} from 'react';
 import {BackAndroid,View,Modal,DrawerLayoutAndroid,AsyncStorage,Text,ScrollView,Image,FlatList,ListView,Alert,Dimensions,TouchableHighlight,ActivityIndicator,TouchableNativeFeedback,VirtualizedList} from 'react-native';
 import {TabNavigator} from 'react-navigation';
-// import {likeImage} from './../Utils/utils';
-import {likeImage } from './../Actions/actions'
-import {dislikeImage} from './../Utils/utils';
 import {Icon,List,ListItem} from 'react-native-elements'
 import {Column as Col, Row} from 'react-native-flexbox-grid'
-import ResponsiveImage from 'react-native-responsive-image';
 import ListCard from './listCard'
 import AutoHeightImage from 'react-native-auto-height-image'
-
 import ImageZoom from 'react-native-image-pan-zoom'
+import {NotificationsAndroid} from 'react-native-notifications';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
 export default class General extends PureComponent {
     constructor(props){
@@ -20,6 +16,15 @@ export default class General extends PureComponent {
         this.updatingIDs = [];
         this.updatingIdStatus = [];
         this.dispatchUpdateId = [];
+NotificationsAndroid.setNotificationReceivedListener((notification) => {
+    console.log("Notification received on device", notification.getData());
+});
+NotificationsAndroid.setNotificationOpenedListener((notification) => {
+    console.log("Notification opened by device user", notification.getData());
+});
+NotificationsAndroid.setRegistrationTokenUpdateListener((deviceToken) => {
+    console.log('Push-notifications registered!', deviceToken)
+});
     this.state= {imageArray:[],showModal:false};
     this.imgArrs = [{uri:"hhhhh"}];
         setInterval(()=>{
@@ -28,16 +33,11 @@ export default class General extends PureComponent {
         }
         },5000)
         this.f = 0;                     
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        // this.onEee = 
         this.state = {
-            ds:ds.cloneWithRows([]),mydata:[],refreshing:false,loading:false,loadingMore:false,imageView:"",rimg:"",gg:0,
-            data:ds,presentId:"",imgStat:""}        
+            mydata:[],refreshing:false,loading:false,loadingMore:false,imageView:"",rimg:"",gg:0,
+            data:0,presentId:"",imgStat:""}        
         setInterval(()=>{          
         if(this.ready == true){
-            // this.props.fetchImage();                            
-            // alert(this.state.refreshing)
-            // this.setState({mydata:(this.props.user.Reducers.data)});
         }  
         },10000)
     }
@@ -51,12 +51,7 @@ export default class General extends PureComponent {
     }
     componentDidMount(){
         var navigator;
-        alert("Mountrd");
         BackAndroid.addEventListener('hardwareBackPress',()=>{
-            alert("Pressed");
-            if (this.state.showModal==true){
-                this.setState({showModal:false})
-            }
         })
     }
     async executeUpdate(id,no){
@@ -84,114 +79,25 @@ export default class General extends PureComponent {
          }
         },5000)
     }
-  async fetchImageToStore(){
-      const alreadyStored = await AsyncStorage.getItem("SavedRecords");
-         if (alreadyStored!==null && alreadyStored!==undefined){
-                this.props.fetchStoredImage(alreadyStored);
-        }
-  }
-  likeImage(rowID){
-      //dispatch a like to the reducer
-    //   likeImage(this.props.user.Reducers.user,rowID);
-    this.props.likeImage(rowID)
-      var newData = [];
-      newData = this.state.mydata;
-      for (var i=0;i<newData.length;i++){
-        if (newData[i].ID==rowID){
-            if(newData[i].LIKED=="1"){
-                newData[i].LIKED="0";newData[i].NUM=newData[i].NUM-1                
-                this.setState({mydata:newData})                
-                // dislikeImage(this.props.user.Reducers.user,rowID)
-            }
-            else if(newData[i].LIKED=="0"){
-                newData[i].LIKED="1";newData[i].NUM=newData[i].NUM+1  
-                this.setState({mydata:newData})                
-                // likeImage(this.props.user.Reducers.user,rowID);
-            }
-            break;
-        }
-      }
-  }
   static navigationOptions = {
     title:"HOME",
     header:null,
   };
-  getStyle(liked,id,num){
-      if (this.dispatchUpdateId.indexOf(id)>=0){
-      }else{
-        //   this.executeUpdate(id,num)
-          this.dispatchUpdateId.push(id);      
-      }
-    if (liked==1){
-        return {color:"red"}
-    }else{
-         return {color:"blue"}
-    }
-  }
-  getStyleText(liked,id){
-    if (liked==1){
-        return {color:"red"}
-    }else{
-        return {color:"blue"}
-    }
-  }
-  likeImagee(){
-  }
-  ret(like,no){
-      if(no==0){
-          return <Text>0 like</Text>
-      }
-      if(no>0){
-          if (like==1 && no==1){
-              return <Text>You like</Text>
-          }else if (like==1 && no>1){
-              return <Text>You and {no-1} likes</Text>
-          }else if(like==0 && no>0){
-              return <Text>{no} likes</Text>            
-          }
-      }
-      return <Text>Olamide</Text>
-  }
-  loadMore(){
-      alert("yes")
-  }
   handleRefresh = () =>{
       this.setState({refreshing:true})
     setTimeout(()=>{
         this.setState({refreshing:false})
     },200)
-    //   this.setState({refreshing:false})
   }
-  handleMore=()=>{
-        alert("End "+this.state.loadingMore);
-        this.setState({loadingMore:true});
-        this.props.fetchImage();                             
-        // setTimeout(()=>{
-        //    this.setState({loadingMore:false}); 
-        // },200)
-        // this.setState({refreshing:false});
-    }
     getModal(renderImage){
-    // if(this.state.showModal==true){
+    NotificationsAndroid.localNotification({
+    title: "TGIF notification",
+    body: "This notification was generated by yusuf saheed working app ",
+    extra: "data"
+});
         this.setState({showModal:true,rimg:renderImage});
-        /*return (
-        <Modal visible={this.state.showModal} transparent={false} onRequestClose={()=>{this.setState({showModal:false})}} >
-            <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
-            <Text>Hello</Text>
-            <ImageZoom cropWidth={Dimensions.get('window').width}
-                cropHeight={Dimensions.get('window').height-15}
-                imageHeight={(Dimensions.get('window').height-15)*0.5}
-                imageWidth = {Dimensions.get('window').width}
-                >
-                <AutoHeightImage width={Dimensions.get('window').width} imageURL={renderImage} />
-                </ImageZoom>
-            </View>
-        </Modal>
-    )*/
-// }
 }
-
-     _keyExtractor = (item, index) => item.ID;
+ _keyExtractor = (item, index) => item.ID;
     render(){
         if (this.props.user.Reducers.data.length<=0){
         return(
@@ -209,10 +115,9 @@ export default class General extends PureComponent {
                 this.setState({gg:this.state.gg+1,showModal:false});
             }
         return(
-            // <ScrollView>
                 <View style={{backgroundColor:"white"}}>
             <Modal visible={this.state.showModal} transparent={false} onRequestClose={()=>{this.setState({showModal:false})}} >
-            <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
+            <View style={{flex:1,alignItems:"center",justifyContent:"center",backgroundColor:"black"}}>
             <Text>Hello</Text>
             <ImageZoom cropWidth={Dimensions.get('window').width}
                 cropHeight={Dimensions.get('window').height-15}
@@ -237,7 +142,6 @@ export default class General extends PureComponent {
                 ListFooterComponent={()=>{if(this.state.loadingMore==true){return(<ActivityIndicator color="blue" style={{marginBottom:5,paddingBottom:5}} />)}else{return <View style={{marginBottom:5,paddingBottom:5}}><Text></Text></View>}}}
                  />
                  </View>
-                //   </ScrollView>
         )
         }
     }

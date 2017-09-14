@@ -16,6 +16,7 @@
     "react-native-infinite-listview": "^1.0.1",
     "react-native-infinite-scroll": "^1.0.6",
     "react-native-material-cards": "^1.0.5",
+    "react-native-notifications": "^1.1.16",
     "react-native-optimized-flatlist": "^1.0.2",
     "react-native-responsive-image": "^2.1.0",
     "react-navigation": "^1.0.0-beta.11",

@@ -41,8 +41,8 @@ async executeUpdate(id,no){
         }
          var index = this.updatingIDs.indexOf(id);                      
          if (this.updatingIdStatus[index]==false){
-         fetch("http://vast-bastion-66037.herokuapp.com/updateItem?id="+id).then((response)=>response.json())
-        //  fetch("http://192.168.43.224:8007/updateItem?id="+id).then((response)=>response.json())
+        //  fetch("http://vast-bastion-66037.herokuapp.com/updateItem?id="+id).then((response)=>response.json())
+         fetch("http://192.168.43.224:8007/updateItem?id="+id).then((response)=>response.json())
          .then((resp)=>{this.updatingIdStatus[index]=false;
                 var t = "nothing";             
              for (var i=0;i<this.state.mydata.length;i++){
@@ -58,14 +58,11 @@ async executeUpdate(id,no){
         },5000)
     }
  likeImage(rowID){
-    // alert(this.props.user.Reducers.data.length);     
     this.props.likeImage(rowID)
   }
 getStyle(liked,id,num){
       if (this.dispatchUpdateId.indexOf(id)>=0){
-      }else{
-        //   this.executeUpdate(id,num)
-        //   this.dispatchUpdateId.push(id);      
+      }else{    
       }
     if (liked==1){
         return {color:"red"}
@@ -88,18 +85,11 @@ getStyle(liked,id,num){
       }
       return <Text>Olamide</Text>
   }
-  getCroppedImage(myuri){
-    ImageEditor.cropImage('https://facebook.github.io/react/img/logo_og.png',{offset:{x:0,y:0},size:{width:100,height:100}},(ruri)=>{return ruri},(err)=>{console.log("Error occured for "+err);})
-  }
-
 render(){
-    
     return (
         <View>
-            
     <Card >
                     <CardTitle title={this.props.item.Category} />
-                    {/*<CardImage source={{uri: this.props.item.Blob}} style={{backgroundColor:"white",paddingTop:5}} title="@TGIFNAIJA"/>*/}
                     
                     <AutoHeightImage imageURL ={this.props.item.Blob} width={Dimensions.get('window').width-10} 
                      style={{alignItem:"center",alignContent:"center",marginBottom:10}} 
@@ -134,5 +124,4 @@ render(){
 }
 
 }
-// const ListScreen = connect(mapStateToProps,dispatchToProps)(ListCard);
 export default connect(mapStateToProps,dispatchToProps)(ListCard);

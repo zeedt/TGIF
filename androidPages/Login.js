@@ -75,7 +75,7 @@ validateUser(){
                 <ScrollView style={{backgroundColor:"#ffe166"}}  contentContainerStyle={{flexGrow: 1,justifyContent: 'center',alignItems: 'center',}} >            
             <View style={styles.container}>
                 <Row size={12}>
-                <Image source={require('./../img/zeed.jpg')} style={styles.logo} />
+                <Image source={require('./../img/tgif_logo.png')} style={styles.logo} />
                 </Row>
                 <Row size={12}>
                     <Col sm={10} md={8} lg={8}>
