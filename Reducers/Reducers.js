@@ -10,6 +10,7 @@ var initialState = {
     clubErrorLoading:false,
     lastUpdatedNo:0,
     updatingStatus: false,
+    fetchedIdsArray:[]
 
 }
 var i=0;
@@ -74,34 +75,11 @@ export default function Reducers(state=initialState,action){
           
         for(var g=0;g<responseJson.length;g++){
             state.data.push(responseJson[g]);
-            // responseJson[g]["key"] = responseJson[g].ID;
-            // alert("Key is "+responseJson[g].key)
-            // newArr.push(responseJson[g]);
-            // Newdata.data.push(responseJson[g]);
-            // Newdata.lastFetchedId=responseJson[g].ID;
-            // lastId =  responseJson[g].ID;                   
+            state.fetchedIdsArray.push(responseJson[g].ID);                 
         }  if(responseJson.length>0){
-            lastId =  responseJson[responseJson.length-1].ID; 
-            // var newD = state.data.concat(responseJson);
-            // console.log("New D "+newD.length)
-            // state.data = state.data.concat(responseJson);                             
+            lastId =  responseJson[responseJson.length-1].ID;                         
             }
-        console.log("New Array is "+responseJson.length)
-        // state.data = state.data.concat(responseJson)
-        // var Newdata = state;
-        // var newArr = []
-        
-        console.log("Data size is "+state.data.length)
-        // state.data.concat(newArr)
-        // state.data = Newdata.data;
-        // state.lastFetchedId = Newdata.lastFetchedId;
-            // alert("false "+state.lastFetchedId);
-        
-        // if(responseJson.length>0 && responseJson!=null && responseJson!=undefined){
-            // saveToDB(responseJson,lastId);
-        // }else{
         fetching = false;
-        // }
         return state
 })
         .catch((err)=>{
@@ -114,6 +92,10 @@ export default function Reducers(state=initialState,action){
 if(action.type=="PERFORM_UPDATE"){
     console.log("Number updated is "+state.lastUpdatedNo);
     var h = 0;    
+}
+if(action.type=="PERFORM_LIST_UPDATE"){
+    state.data[state.fetchedIdsArray.indexOf(action.id)].NUM = action.nLikes;
+    return state;
 }
 if (action.type=="LIKE_IMAGE"){
     console.log("ID liked now is "+action.id);

@@ -26,3 +26,6 @@ export function likeImage(id){
     // alert("IN "+id);
     return {type:"LIKE_IMAGE",id:id}
 }
+export function updateListLikes(id,nLikes){
+    return {type:"PERFORM_LIST_UPDATE",id:id,nLikes:nLikes}
+}

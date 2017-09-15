@@ -9,6 +9,7 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import rootReducer from './../Reducers';
 import {likeImage } from './../Actions/actions'
+import {updateListLikes } from './../Actions/actions'
 import { connect } from 'react-redux'
 const dispatchToProps = (dispatch) => {
   return {
@@ -17,14 +18,13 @@ const dispatchToProps = (dispatch) => {
     fetchStoredImage:(params)=>dispatch(fetchStoredImage(params)),
     setFetching:(params)=> dispatch(setFetching(params)),
     setClubError:()=>dispatch(setClubError()),
-    likeImage:(id)=>dispatch(likeImage(id))
-    
+    likeImage:(id)=>dispatch(likeImage(id)),
+    updateListLikes:(id,likesNo)=>dispatch(updateListLikes(id,likesNo))
   }
 }
 const mapStateToProps = (state) => ({
   user: state
 })
-
  class ListCard extends PureComponent{
 constructor(props){
     super(props);
@@ -34,7 +34,6 @@ constructor(props){
 }
 async executeUpdate(id,no){
         setInterval(()=>{          
-         console.log("executing "+id); 
         if (this.updatingIDs.indexOf(id)<0){
             this.updatingIDs.push(id);
             this.updatingIdStatus.push(false);
@@ -44,16 +43,9 @@ async executeUpdate(id,no){
         //  fetch("http://vast-bastion-66037.herokuapp.com/updateItem?id="+id).then((response)=>response.json())
          fetch("http://192.168.43.224:8007/updateItem?id="+id).then((response)=>response.json())
          .then((resp)=>{this.updatingIdStatus[index]=false;
-                var t = "nothing";             
-             for (var i=0;i<this.state.mydata.length;i++){
-                if (this.state.mydata[i].ID==id){
-                    t = this.state.mydata[i].NUM;
-                    break;
-                }
-            }
-             if(resp.nLikes!="Error" && resp.nLikes!=t && t!="nothing"){if(id=="23"){}this.updateListLikes(id,resp.nLikes);}
+             if(resp.nLikes!="Error" && resp.nLikes!=this.props.user.Reducers.data[this.props.user.Reducers.fetchedIdsArray.indexOf(id)].NUM){this.updatingIdStatus[index]=false;this.props.updateListLikes(id,resp.nLikes);}
             })
-         .catch((err)=>{console.log("Error occured while fetching");this.updatingIdStatus[index]=false;});
+         .catch((err)=>{console.log("Error occured while fetching ",err);this.updatingIdStatus[index]=false;});
          }
         },5000)
     }
@@ -62,7 +54,9 @@ async executeUpdate(id,no){
   }
 getStyle(liked,id,num){
       if (this.dispatchUpdateId.indexOf(id)>=0){
-      }else{    
+      }else{
+          this.executeUpdate(id,num)
+          this.dispatchUpdateId.push(id);    
       }
     if (liked==1){
         return {color:"red"}
@@ -90,7 +84,6 @@ render(){
         <View>
     <Card >
                     <CardTitle title={this.props.item.Category} />
-                    
                     <AutoHeightImage imageURL ={this.props.item.Blob} width={Dimensions.get('window').width-10} 
                      style={{alignItem:"center",alignContent:"center",marginBottom:10}} 
                      />
@@ -99,7 +92,6 @@ render(){
                     <Text>  {this.ret(this.props.item.LIKED,this.props.item.NUM)}</Text>
                     </Row>
                     <CardAction seperator={true} inColumn={false} style={{flex:1,paddingLeft:10}}>
-                        
                         <TouchableNativeFeedback   background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>{this.likeImage(this.props.item.ID)}} >
                         <View style={{flex:1,flexDirection:"row"}}>
                         <Icon  name="thumbs-o-up" type="font-awesome" style={{paddingLeft:10}} color={this.getStyle(this.props.item.LIKED,this.props.item.ID,this.props.item.NUM).color} />
@@ -119,7 +111,6 @@ render(){
                     </CardAction>
                     </Card>
                     </View>
-        
     )
 }
 

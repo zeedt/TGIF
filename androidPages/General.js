@@ -16,11 +16,14 @@ export default class General extends PureComponent {
         this.updatingIDs = [];
         this.updatingIdStatus = [];
         this.dispatchUpdateId = [];
+        this.onCheckPermissions();
 NotificationsAndroid.setNotificationReceivedListener((notification) => {
     console.log("Notification received on device", notification.getData());
 });
 NotificationsAndroid.setNotificationOpenedListener((notification) => {
     console.log("Notification opened by device user", notification.getData());
+    // this.getModal(this.props.user.Reducers.data[0].Blob)
+    console.log("yesee");
 });
 NotificationsAndroid.setRegistrationTokenUpdateListener((deviceToken) => {
     console.log('Push-notifications registered!', deviceToken)
@@ -41,44 +44,19 @@ NotificationsAndroid.setRegistrationTokenUpdateListener((deviceToken) => {
         }  
         },10000)
     }
-    updateListLikes(id,no){
-        for (var i=0;i<this.state.mydata.length;i++){
-        if (this.state.mydata[i].ID==id){          
-            this.state.mydata[i].NUM = no;
-            break;
-        }
-      }
-    }
     componentDidMount(){
         var navigator;
         BackAndroid.addEventListener('hardwareBackPress',()=>{
         })
     }
-    async executeUpdate(id,no){
-        setInterval(()=>{          
-         console.log("executing "+id); 
-        if (this.updatingIDs.indexOf(id)<0){
-            this.updatingIDs.push(id);
-            this.updatingIdStatus.push(false);
-        }
-         var index = this.updatingIDs.indexOf(id);                      
-         if (this.updatingIdStatus[index]==false){
-        //  fetch("http://vast-bastion-66037.herokuapp.com/updateItem?id="+id).then((response)=>response.json())
-         fetch("http://192.168.43.224:8007/updateItem?id="+id).then((response)=>response.json())
-         .then((resp)=>{this.updatingIdStatus[index]=false;
-                var t = "nothing";             
-             for (var i=0;i<this.state.mydata.length;i++){
-                if (this.state.mydata[i].ID==id){
-                    t = this.state.mydata[i].NUM;
-                    break;
-                }
-            }
-             if(resp.nLikes!="Error" && resp.nLikes!=t && t!="nothing"){if(id=="23"){}this.updateListLikes(id,resp.nLikes);}
-            })
-         .catch((err)=>{console.log("Error occured while fetching");this.updatingIdStatus[index]=false;});
-         }
-        },5000)
+    async onCheckPermissions() {
+    const hasPermissions = await NotificationsAndroid.isRegisteredForRemoteNotifications();
+    if (hasPermissions) {
+      console.log('Yay! You have permissions');
+    } else {
+      console.log('Boo! You don\'t have permissions');
     }
+  }
   static navigationOptions = {
     title:"HOME",
     header:null,
