@@ -7,47 +7,47 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
-  StyleSheet,
-  Text,
-  View
+  StyleSheet,ScrollView,FlatList,SectionList,Alert,ActivityIndicator,Button,RefreshControl,
+  Text,StatusBar,Switch,AsyncStorage,
+  View,DrawerLayoutAndroid
 } from 'react-native';
-
-export default class TGIF extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
-
-AppRegistry.registerComponent('TGIF', () => TGIF);
+import NavigatorApp from './iosPages/Home'
+import configureStore from './configureStore'
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+import rootReducer from './Reducers';
+import {fetchUser} from './Actions/actions'
+import {fetchStoredImage} from './Actions/actions'
+const store = configureStore();
+async function getUser(){
+  try {
+    //  await AsyncStorage.removeItem('Username');
+    //  await AsyncStorage.removeItem('lastfetchedID');
+  // const alreadyStored = await AsyncStorage.getItem("SavedRecords");
+  
+  // if (alreadyStored!=null){
+  //   store.dispatch(fetchStoredImage(alreadyStored));
+  // }
+  // const lastfetchedId = await AsyncStorage.getItem('lastfetchedID');  
+  const value = await AsyncStorage.getItem('Username');
+  
+  if (value !== null){
+    // if(lastfetchedId!=null && lastfetchedId!=undefined){
+    //   store.dispatch(fetchUser(value,0));
+    // }else{
+      store.dispatch(fetchUser(value,0));      
+    // }
+     }else{
+  store.dispatch(fetchUser("",0));       
+     }
+    } catch (error) {
+        console.log("Error occured "+error)
+    }
+    }
+    getUser();
+const ReduxApp = () => (
+  <Provider store={store}>
+    <NavigatorApp />
+  </Provider>
+)
+AppRegistry.registerComponent('TGIF', () => ReduxApp);

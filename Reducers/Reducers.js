@@ -67,26 +67,46 @@ export default function Reducers(state=initialState,action){
     if(action.type=="FETCH_IMAGES"){
         if (fetching==false){
             // alert("false "+state.lastFetchedId);
+            console.log("present count "+state.data.length);
         fetching = true;
+        var nnn = state;
+        nnn.fetching = true;
+        state = nnn;
         // fetch("http://vast-bastion-66037.herokuapp.com/fetchPostImage?id="+lastId+"&username="+state.user).then((response)=>response.json()).
-        fetch("http://192.168.43.224:8007/fetchPostImage?id="+lastId+"&username="+state.user).then((response)=>response.json()).
+        fetch("http://127.0.0.1:8007/fetchPostImage?id="+lastId+"&username="+state.user).then((response)=>response.json()).
         // fetch("http://localhost:8007/fetchPostImage").then((response)=>response.json()).
         then((responseJson)=>{
-          
         for(var g=0;g<responseJson.length;g++){
+            if(state.fetchedIdsArray.indexOf(responseJson[g].ID)<0){
             state.data.push(responseJson[g]);
-            state.fetchedIdsArray.push(responseJson[g].ID);                 
+            state.fetchedIdsArray.push(responseJson[g].ID);}
+            else{
+                console.log("Already exist");
+            }                 
         }  if(responseJson.length>0){
             lastId =  responseJson[responseJson.length-1].ID;                         
             }
         fetching = false;
+        var nnn = state;
+        nnn.fetching = false;
+        state = nnn;
         return state
 })
         .catch((err)=>{
         console.log("Error is "+err)
         fetching = false;
+        var nnn = state;
+        nnn.fetching = false;
+        state = nnn;      
         return state;
 });
+    }else{
+        fetching = false;
+        console.log("Here");
+        var nnn = state;
+        nnn.fetching = false;
+        state = nnn;
+        return state;                
     }
 }
 if(action.type=="PERFORM_UPDATE"){
@@ -110,14 +130,14 @@ if (action.type=="LIKE_IMAGE"){
                      console.log("Liking")
                     Newdata.data[i].LIKED="1";Newdata.data[i].NUM=Newdata.data[i].NUM+1;
                     //   fetch("http://vast-bastion-66037.herokuapp.com/like?id="+action.id+"&user="+state.user)
-                fetch("http://192.168.43.224:8007/like?id="+action.id+"&user="+state.user)
+                fetch("http://127.0.0.1:8007/like?id="+action.id+"&user="+state.user)
                 .then((response)=>response.toString()).then((resp)=>{})
                 .catch((err)=>{console.log("Netwrok communication error")});
                 }else if(Newdata.data[i].LIKED=="1"){
                      console.log("DisLiking")                    
                     Newdata.data[i].LIKED="0";Newdata.data[i].NUM=Newdata.data[i].NUM-1;
                                 // fetch("http://vast-bastion-66037.herokuapp.com/dislike?imageId="+action.id+"&user="+state.user)
-                    fetch("http://192.168.43.224:8007/dislike?imageId="+action.id+"&user="+state.user)
+                    fetch("http://127.0.0.1:8007/dislike?imageId="+action.id+"&user="+state.user)
                     .then((response)=>response.toString()).then((resp)=>{})
                     .catch((err)=>{console.log("Netwrok communication error")}); 
                 }

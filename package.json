@@ -9,17 +9,17 @@
   "dependencies": {
     "react": "16.0.0-alpha.12",
     "react-native": "0.47.1",
+    "react-native-auto-height-image": "^0.3.3",
     "react-native-drawer-layout-polyfill": "^1.3.2",
     "react-native-elements": "^0.16.0",
-    "react-native-fetch-blob": "^0.10.8",
+    "react-native-flexbox-grid": "^0.3.1",
     "react-native-image-zoom-viewer": "^2.0.10",
-    "react-native-infinite-listview": "^1.0.1",
-    "react-native-infinite-scroll": "^1.0.6",
     "react-native-material-cards": "^1.0.5",
     "react-native-notifications": "^1.1.16",
-    "react-native-optimized-flatlist": "^1.0.2",
     "react-native-responsive-image": "^2.1.0",
     "react-navigation": "^1.0.0-beta.11",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
     "symbol-observable": "^1.0.4"
   },
   "devDependencies": {
