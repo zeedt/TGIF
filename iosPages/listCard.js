@@ -1,5 +1,5 @@
 import React,{PureComponent} from 'react';
-import {ImageEditor,Modal,ImageStore,View,DrawerLayoutAndroid,AsyncStorage,Text,ScrollView,Image,FlatList,ListView,Alert,Dimensions,TouchableHighlight,ActivityIndicator,TouchableNativeFeedback,VirtualizedList} from 'react-native';
+import {ImageEditor,Modal,TouchableWithoutFeedback,ImageStore,View,DrawerLayoutAndroid,AsyncStorage,Text,ScrollView,Image,FlatList,ListView,Alert,Dimensions,TouchableHighlight,ActivityIndicator,TouchableNativeFeedback,VirtualizedList} from 'react-native';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
 import {Column as Col, Row} from 'react-native-flexbox-grid'
 import {Icon,List,ListItem} from 'react-native-elements'
@@ -40,8 +40,8 @@ async executeUpdate(id,no){
         }
          var index = this.updatingIDs.indexOf(id);                      
          if (this.updatingIdStatus[index]==false){
-        //  fetch("http://vast-bastion-66037.herokuapp.com/updateItem?id="+id).then((response)=>response.json())
-         fetch("http://127.0.0.1:8007/updateItem?id="+id).then((response)=>response.json())
+         fetch("http://vast-bastion-66037.herokuapp.com/updateItem?id="+id).then((response)=>response.json())
+        //  fetch("http://127.0.0.1:8007/updateItem?id="+id).then((response)=>response.json())
          .then((resp)=>{this.updatingIdStatus[index]=false;
              if(resp.nLikes!="Error" && resp.nLikes!=this.props.user.Reducers.data[this.props.user.Reducers.fetchedIdsArray.indexOf(id)].NUM){this.updatingIdStatus[index]=false;this.props.updateListLikes(id,resp.nLikes);}
             })
@@ -92,12 +92,12 @@ render(){
                     <Text>  {this.ret(this.props.item.LIKED,this.props.item.NUM)}</Text>
                     </Row>
                     <CardAction seperator={true} inColumn={false} style={{flex:1,paddingLeft:10}}>
-                        <TouchableHighlight   onPress={()=>{this.likeImage(this.props.item.ID)}} style={{marginTop:10}} >
+                        <TouchableWithoutFeedback   onPress={()=>{this.likeImage(this.props.item.ID)}} style={{marginTop:10}} >
                         <View style={{flex:1,flexDirection:"row"}}>
                         <Icon  name="thumbs-o-up" type="font-awesome" style={{paddingLeft:10}} color={this.getStyle(this.props.item.LIKED,this.props.item.ID,this.props.item.NUM).color} />
                             <Text style={this.getStyle(this.props.item.LIKED,this.props.item.ID,this.props.item.NUM)}>  Like</Text>
                         </View>
-                        </TouchableHighlight>
+                        </TouchableWithoutFeedback>
                         <CardButton style={{flex:1}}
                         onPress={() => {}}
                         title="Website"

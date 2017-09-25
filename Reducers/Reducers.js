@@ -72,8 +72,8 @@ export default function Reducers(state=initialState,action){
         var nnn = state;
         nnn.fetching = true;
         state = nnn;
-        // fetch("http://vast-bastion-66037.herokuapp.com/fetchPostImage?id="+lastId+"&username="+state.user).then((response)=>response.json()).
-        fetch("http://127.0.0.1:8007/fetchPostImage?id="+lastId+"&username="+state.user).then((response)=>response.json()).
+        fetch("http://vast-bastion-66037.herokuapp.com/fetchPostImage?id="+lastId+"&username="+state.user).then((response)=>response.json()).
+        // fetch("http://127.0.0.1:8007/fetchPostImage?id="+lastId+"&username="+state.user).then((response)=>response.json()).
         // fetch("http://localhost:8007/fetchPostImage").then((response)=>response.json()).
         then((responseJson)=>{
         for(var g=0;g<responseJson.length;g++){
@@ -129,15 +129,15 @@ if (action.type=="LIKE_IMAGE"){
                 if(Newdata.data[i].LIKED=="0"){
                      console.log("Liking")
                     Newdata.data[i].LIKED="1";Newdata.data[i].NUM=Newdata.data[i].NUM+1;
-                    //   fetch("http://vast-bastion-66037.herokuapp.com/like?id="+action.id+"&user="+state.user)
-                fetch("http://127.0.0.1:8007/like?id="+action.id+"&user="+state.user)
+                      fetch("http://vast-bastion-66037.herokuapp.com/like?id="+action.id+"&user="+state.user)
+                // fetch("http://127.0.0.1:8007/like?id="+action.id+"&user="+state.user)
                 .then((response)=>response.toString()).then((resp)=>{})
                 .catch((err)=>{console.log("Netwrok communication error")});
                 }else if(Newdata.data[i].LIKED=="1"){
                      console.log("DisLiking")                    
                     Newdata.data[i].LIKED="0";Newdata.data[i].NUM=Newdata.data[i].NUM-1;
-                                // fetch("http://vast-bastion-66037.herokuapp.com/dislike?imageId="+action.id+"&user="+state.user)
-                    fetch("http://127.0.0.1:8007/dislike?imageId="+action.id+"&user="+state.user)
+                                fetch("http://vast-bastion-66037.herokuapp.com/dislike?imageId="+action.id+"&user="+state.user)
+                    // fetch("http://127.0.0.1:8007/dislike?imageId="+action.id+"&user="+state.user)
                     .then((response)=>response.toString()).then((resp)=>{})
                     .catch((err)=>{console.log("Netwrok communication error")}); 
                 }

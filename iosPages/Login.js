@@ -39,8 +39,8 @@ export default class Login extends Component{
 }
 validateUser(){
     console.log("CCC")
-    // fetch("http://vast-bastion-66037.herokuapp.com/validateUser",{
-    fetch("http://127.0.0.1:8007/validateUser",{
+    fetch("http://vast-bastion-66037.herokuapp.com/validateUser",{
+    // fetch("http://127.0.0.1:8007/validateUser",{
     // fetch("http://localhost:8007/validateUser",{
             method:'POST',
              headers: {
@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
   },
   textInput:{
     fontSize:15,
+    marginBottom:20
   },
   Button:{
       marginBottom:20,
