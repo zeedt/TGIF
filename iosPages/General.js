@@ -11,11 +11,14 @@ import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 
 export default class General extends PureComponent {
     constructor(props){
         super(props);
+        this.setLoadingMoreValue = false;
         this.ready = false;
+        this.showModal = false;
         this.check = false;
         this.updatingIDs = [];
         this.updatingIdStatus = [];
         this.dispatchUpdateId = [];
+        this.gg = 0;
     this.state= {imageArray:[],showModal:false};
     this.imgArrs = [{uri:"hhhhh"}];
         setInterval(()=>{
@@ -40,6 +43,8 @@ export default class General extends PureComponent {
         console.error(error);
     }
     componentWillUnmount() {    
+}
+componentWillMount(){
 }
     componentDidMount(){
         var navigator;
@@ -74,7 +79,8 @@ PushNotificationIOS.scheduleLocalNotification({
 PushNotificationIOS.getScheduledLocalNotifications((e)=>{
     console.log("Scheduled are "+JSON.stringify(e))
 })
-        this.setState({showModal:true,rimg:renderImage});
+        this.showModal = true;
+        this.setState({rimg:renderImage});
 }
  _keyExtractor = (item, index) => item.ID;
     render(){
@@ -90,15 +96,16 @@ PushNotificationIOS.getScheduledLocalNotifications((e)=>{
         }else{
             this.ready = true;
             this.check = true;
-            if(this.state.gg==0){
-                this.setState({gg:this.state.gg+1,showModal:false});
+            if(this.gg==0){
+                this.showModal = false;
+                this.gg = this.gg + 1;
             }
         return(
                 <View style={{backgroundColor:"white"}}>
-            <Modal visible={this.state.showModal} transparent={false} onRequestClose={()=>{this.setState({showModal:false})}} >
-            <View style={{flex:1,backgroundColor:"Blue",marginTop:30}}>
-            <TouchableWithoutFeedback style={{}} onPress={()=>{this.setState({showModal:false})}} >
-            <Text style={{fontSize:20,color:"Black",marginLeft:5}}> Back </Text>
+            <Modal visible={this.showModal} transparent={false} onRequestClose={()=>{this.showModal=false}} >
+            <View style={{flex:1,marginTop:30}}>
+            <TouchableWithoutFeedback style={{}} onPress={()=>{this.showModal=false}} >
+            <View><Text style={{fontSize:20,marginLeft:5}}> Back </Text></View>
             </TouchableWithoutFeedback>
             <View style={{flex:1,alignItems:"center",justifyContent:"center",backgroundColor:"black",marginTop:30}}>
             <ImageZoom cropWidth={Dimensions.get('window').width}
@@ -124,13 +131,15 @@ PushNotificationIOS.getScheduledLocalNotifications((e)=>{
                 onEndReachedThreshold ={1}
                 ListFooterComponent={()=>{
                     if(this.props.user.Reducers.fetching==true){
-                    this.setState({loadingMore:true})                        
-                    }else{this.setState({loadingMore:false});}
-                    if(this.state.loadingMore==true)
+                        this.setLoadingMoreValue = true;
+                    }else{
+                        this.setLoadingMoreValue = false;                        
+                        }
+                    if(this.setLoadingMoreValue == true)
                     {return(<ActivityIndicator color="blue" style={{marginBottom:5,paddingBottom:5}} />)}
                     else{
                     return (
-                    <TouchableWithoutFeedback onPress={()=>{this.setState({loadingMore:true});this.props.fetchImage(); }}>
+                    <TouchableWithoutFeedback onPress={()=>{this.setLoadingMoreValue = true;this.props.fetchImage(); }}>
                         <View style={{marginBottom:5,paddingBottom:5,flex:1,alignItems:"center",justifyContent:"center"}}>
                          <Icon  name="refresh" type="MaterialCommunityIcons" color="blue" style={{paddingLeft:10}} />
                         </View>

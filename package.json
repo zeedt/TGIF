@@ -12,6 +12,7 @@
     "react-native-auto-height-image": "^0.3.3",
     "react-native-drawer-layout-polyfill": "^1.3.2",
     "react-native-elements": "^0.16.0",
+    "react-native-fcm": "^9.3.0",
     "react-native-flexbox-grid": "^0.3.1",
     "react-native-image-zoom-viewer": "^2.0.10",
     "react-native-material-cards": "^1.0.5",
