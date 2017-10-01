@@ -2,7 +2,7 @@ package com.tgif;
 
 import com.facebook.react.ReactActivity;
 import android.content.Intent;
-public class MainActivity extends ReactActivity {
+public class MainActivitytwo extends ReactActivity {
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -10,9 +10,8 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-		
-		System.out.println("Regiostering component one");
-        return "TGIF";
+		System.out.println("Regiostering component two");
+        return "TGIF3";
     }
 	
    @Override

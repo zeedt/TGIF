@@ -1,6 +1,7 @@
 import  React,{Component} from 'react';
-import {View,DrawerLayoutAndroid,Text,List,WebView,Button} from 'react-native';
+import {View,DrawerLayoutAndroid,Text,List,WebView,Button,TouchableHighlight} from 'react-native';
 import {StackNavigator,TabNavigator} from 'react-navigation';
+import {Icon} from 'react-native-elements'
 
 export default class Clubs extends Component{
     constructor(props){
@@ -36,9 +37,11 @@ export default class Clubs extends Component{
     }
     else{
         return(
-            <View>
-            <Text>Error occured</Text>
-            <Button title="reload" onPress={()=>{this.var = false}} />
+            <View style={{flex:1,alignItems:"center",justifyContent:"center",backgroundColor:"#ffffff"}}>
+                        <View style={{marginBottom:5,paddingBottom:5,flex:1,alignItems:"center",justifyContent:"center"}}>
+                            <Text>Error loading page</Text>
+                         <Icon  name="refresh" size={40} type="MaterialCommunityIcons" color="blue" style={{paddingLeft:10}} onPress={()=>{this.var=false}} />
+                        </View>
             </View>
         )
     }

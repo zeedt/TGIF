@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "184708630915",
+    "firebase_url": "https://tgif-faae7.firebaseio.com",
+    "project_id": "tgif-faae7",
+    "storage_bucket": "tgif-faae7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184708630915:android:8aafc22e7315a3eb",
+        "android_client_info": {
+          "package_name": "com.tgif"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "184708630915-3jcc2mr3j1up53st1p80lkto6e83qlad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIRUGc4OhQpIMiAqYn8LoCkfCGZ3U1Cfw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

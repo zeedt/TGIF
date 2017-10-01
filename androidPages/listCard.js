@@ -31,6 +31,7 @@ constructor(props){
     this.dispatchUpdateId = [];   
     this.updatingIDs = [];        
     this.updatingIdStatus = []; 
+    console.log("yh")
 }
 async executeUpdate(id,no){
         setInterval(()=>{          
@@ -85,7 +86,7 @@ render(){
     <Card >
                     <CardTitle title={this.props.item.Category} />
                     <AutoHeightImage imageURL ={this.props.item.Blob} width={Dimensions.get('window').width-10} 
-                     style={{alignItem:"center",alignContent:"center",marginBottom:10}} 
+                     style={{alignContent:"center",marginBottom:10}} 
                      />
                     <CardContent text={this.props.item.Description} />
                     <Row style={{paddingLeft:10,marginBottom:5}}><Icon name="thumbs-o-up" size={15} type="font-awesome" color="red" />                                             

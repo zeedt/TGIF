@@ -14,8 +14,9 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
+import com.tgif.ActivityStarterReactPackage;
 
-public class MainApplication extends Application implements ReactApplication {
+public class ZeedApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -27,12 +28,14 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+		  new ActivityStarterReactPackage(), // This is it!
             new FIRMessagingPackage(),
+            //new BackgroundJobPackage(),
             //new ReactNativePushNotificationPackage(),
             //new RNNotificationsPackage(),
             //new RNNotificationsPackage(),
             new VectorIconsPackage()
-			 //new RNNotificationsPackage(MainApplication.this)
+			 //new RNNotificationsPackage(ZeedApplication.this)
       );
     }
   };

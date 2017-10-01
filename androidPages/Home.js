@@ -48,5 +48,4 @@ const NavigatorApp = StackNavigator({
   General2: {screen: GeneralScreen},
   ListCard: {screen: ListScreen},
 });
-
 export default NavigatorApp

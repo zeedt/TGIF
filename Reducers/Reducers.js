@@ -65,28 +65,48 @@ export default function Reducers(state=initialState,action){
         return {...state}
     }
     if(action.type=="FETCH_IMAGES"){
+        console.log("Calliiii");
         if (fetching==false){
             // alert("false "+state.lastFetchedId);
         fetching = true;
+        var nnn = state;
+        nnn.fetching = true;
+        state = nnn;
         // fetch("http://vast-bastion-66037.herokuapp.com/fetchPostImage?id="+lastId+"&username="+state.user).then((response)=>response.json()).
         fetch("http://192.168.43.224:8007/fetchPostImage?id="+lastId+"&username="+state.user).then((response)=>response.json()).
         // fetch("http://localhost:8007/fetchPostImage").then((response)=>response.json()).
         then((responseJson)=>{
           
         for(var g=0;g<responseJson.length;g++){
+            if(state.fetchedIdsArray.indexOf(responseJson[g].ID)<0){
             state.data.push(responseJson[g]);
-            state.fetchedIdsArray.push(responseJson[g].ID);                 
+            state.fetchedIdsArray.push(responseJson[g].ID);} 
+            else{
+                console.log("Already exist");
+            }                
         }  if(responseJson.length>0){
             lastId =  responseJson[responseJson.length-1].ID;                         
             }
         fetching = false;
+        var nnn = state;
+        nnn.fetching = false;
+        state = nnn;
         return state
 })
         .catch((err)=>{
         console.log("Error is "+err)
         fetching = false;
+        var nnn = state;
+        nnn.fetching = false;
+        state = nnn;
         return state;
 });
+    }else{
+        fecthing = false;
+        var nnn = state;
+        nnn.fetching = false;
+        state = nnn;
+        return state;
     }
 }
 if(action.type=="PERFORM_UPDATE"){
